@@ -42,8 +42,10 @@ const didConfig = {
       websiteName: APP_NAME,
       websiteIcon: WEBSITE_ICON,
     },
+    Telegram: {
+      botId: TELEGRAM_BOT_ID,
+    },
   },
-  botId: TELEGRAM_BOT_ID,
 };
 
 const baseConfig: IConfigProps["baseConfig"] = {
