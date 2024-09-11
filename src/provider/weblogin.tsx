@@ -1,8 +1,8 @@
 import { IConfigProps } from "@aelf-web-login/wallet-adapter-bridge";
-import { NightElfWallet } from "@aelf-web-login/wallet-adapter-night-elf";
+// import { NightElfWallet } from "@aelf-web-login/wallet-adapter-night-elf";
 import { init, WebLoginProvider } from "@aelf-web-login/wallet-adapter-react";
 import React from "react";
-import { APP_NAME, WEBSITE_ICON } from "../constants/website";
+import { APP_NAME } from "../constants/website";
 import loginConfig from "../constants/config/login.config";
 import { SignInDesignEnum } from "@aelf-web-login/wallet-adapter-base";
 import { PortkeyAAWallet } from "@aelf-web-login/wallet-adapter-portkey-aa";
@@ -13,14 +13,14 @@ const {
   CONNECT_SERVER,
   GRAPHQL_SERVER,
   NETWORK_TYPE,
-  RPC_SERVER_AELF,
-  RPC_SERVER_TDVV,
-  RPC_SERVER_TDVW,
+  // RPC_SERVER_AELF,
+  // RPC_SERVER_TDVV,
+  // RPC_SERVER_TDVW,
   PORTKEY_SERVER_URL,
-  // TELEGRAM_BOT_ID,
+  TELEGRAM_BOT_ID,
 } = loginConfig;
 
-const didConfig = {
+const didConfig: IConfigProps["didConfig"] = {
   graphQLUrl: GRAPHQL_SERVER,
   connectUrl: CONNECT_SERVER,
   serviceUrl: PORTKEY_SERVER_URL,
@@ -29,12 +29,12 @@ const didConfig = {
     timeout: 30000,
   },
   socialLogin: {
-    Portkey: {
-      websiteName: APP_NAME,
-      websiteIcon: WEBSITE_ICON,
-    },
+    // Portkey: {
+    //   websiteName: APP_NAME,
+    //   websiteIcon: WEBSITE_ICON,
+    // },
     Telegram: {
-      botId: "7347235270", // TELEGRAM_BOT_ID
+      botId: TELEGRAM_BOT_ID,
     },
   },
   referralInfo: {
@@ -71,27 +71,27 @@ const wallets = [
     autoLogoutOnAccountMismatch: true,
     autoLogoutOnChainMismatch: true,
   }),
-  new NightElfWallet({
-    chainId: CHAIN_ID,
-    appName: APP_NAME,
-    connectEagerly: true,
-    useMultiChain: false,
-    defaultRpcUrl: RPC_SERVER_AELF,
-    nodes: {
-      AELF: {
-        chainId: "AELF",
-        rpcUrl: RPC_SERVER_AELF,
-      },
-      tDVW: {
-        chainId: "tDVW",
-        rpcUrl: RPC_SERVER_TDVW,
-      },
-      tDVV: {
-        chainId: "tDVV",
-        rpcUrl: RPC_SERVER_TDVV,
-      },
-    },
-  }),
+  // new NightElfWallet({
+  //   chainId: CHAIN_ID,
+  //   appName: APP_NAME,
+  //   connectEagerly: true,
+  //   useMultiChain: false,
+  //   defaultRpcUrl: RPC_SERVER_AELF,
+  //   nodes: {
+  //     AELF: {
+  //       chainId: "AELF",
+  //       rpcUrl: RPC_SERVER_AELF,
+  //     },
+  //     tDVW: {
+  //       chainId: "tDVW",
+  //       rpcUrl: RPC_SERVER_TDVW,
+  //     },
+  //     tDVV: {
+  //       chainId: "tDVV",
+  //       rpcUrl: RPC_SERVER_TDVV,
+  //     },
+  //   },
+  // }),
 ];
 
 const config: IConfigProps = {

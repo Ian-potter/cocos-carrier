@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AssetsPage from "./assetsPage/index.tsx";
 import "./index.css";
 import WebLoginConfigProvider from "./provider/weblogin.tsx";
+import ETransferLayout from "./provider/ETransferLayout.tsx";
 
 const router = createBrowserRouter([
   {
@@ -24,7 +25,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <WebLoginConfigProvider>
-      <RouterProvider router={router} />
+      <ETransferLayout>
+        <RouterProvider router={router} />
+      </ETransferLayout>
     </WebLoginConfigProvider>
   </React.StrictMode>
 );

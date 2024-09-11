@@ -1,0 +1,31 @@
+.deposit-wrapper .portkey-ant-modal-content {
+  overflow: auto;
+  z-index: 99;
+}
+
+.deposit-wrapper .portkey-ant-modal-header .portkey-ant-modal-title,
+.deposit-wrapper .portkey-ant-drawer-header {
+  /* display: none; */
+  font-size: 16px;
+  line-height: 24px;
+  font-family: Roboto-Medium, PingFangSC-Medium, PingFang SC, sans-serif;
+}
+
+.deposit-wrapper .portkey-ant-modal-body {
+  padding: 12px 0 0;
+}
+
+.etransfer-ui-selected-data-wrapper
+  .etransfer-ui-selected-token-wrapper:not(:first-child),
+.etransfer-ui-selected-data-wrapper
+  .etransfer-ui-selected-chain-wrapper:not(:first-child),
+.etransfer-ui-deposit-select-token-chain,
+.etransfer-ui-selected-data-wrapper .space,
+.etransfer-ui-row-center,
+.etransfer-ui-description-wrapper {
+  display: none !important;
+}
+
+.etransfer-ui-deposit-title {
+  display: none !important;
+}

@@ -1,6 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Button, message, Divider, Flex } from "antd";
 import { useConnectWallet } from "@aelf-web-login/wallet-adapter-react";
+import { WalletTypeEnum } from "@aelf-web-login/wallet-adapter-base";
+import { useNavigate } from "react-router-dom";
+import ETransfer, { IETransferInstance } from "./ETransfer";
 
 const LoginDemo: React.FC = () => {
   const {
@@ -15,12 +18,15 @@ const LoginDemo: React.FC = () => {
   } = useConnectWallet();
   console.log("LoginDemo init----------");
 
+  const transferRef = useRef<IETransferInstance>();
+
   const onConnectBtnClickHandler = async () => {
     try {
       const rs = await connectWallet();
       console.log("rs", rs);
     } catch (e: any) {
-      // message.error(e.message);
+      console.log(e, "===");
+      // message.error(e.nativeError?.message ?? e.message);
     }
   };
 
@@ -28,12 +34,14 @@ const LoginDemo: React.FC = () => {
     if (!loginError) {
       return;
     }
-    message.error(loginError.message);
+    message.error(loginError.nativeError?.message ?? loginError.message);
   }, [loginError]);
 
   const onDisConnectBtnClickHandler = () => {
     disConnectWallet();
   };
+
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -44,16 +52,34 @@ const LoginDemo: React.FC = () => {
           disabled={isConnected}>
           {isLocking ? "unlock" : "connect"}
         </Button>
-        <Button type="primary" onClick={lock} disabled={!walletInfo}>
-          lock
-        </Button>
+        {walletType === WalletTypeEnum.aa && (
+          <Button type="primary" onClick={lock} disabled={!walletInfo}>
+            lock
+          </Button>
+        )}
         <Button
           type="primary"
           onClick={onDisConnectBtnClickHandler}
           disabled={!isConnected}>
           disconnect
         </Button>
+
+        {walletType === WalletTypeEnum.aa && !isLocking && (
+          <Button type="primary" onClick={() => navigate("/assets")}>
+            Go Asset page
+          </Button>
+        )}
+
+        {isConnected && (
+          <Button
+            type="primary"
+            onClick={() => transferRef.current?.onDeposit()}>
+            deposit
+          </Button>
+        )}
       </Flex>
+      <ETransfer ref={transferRef} />
+
       <div>
         walletInfo:
         <pre style={{ overflow: "auto", height: "300px" }}>

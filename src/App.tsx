@@ -7,7 +7,6 @@ import ContractDemo from "./compontents/ContractDemo";
 import SignatureDemo from "./compontents/SignatureDemo";
 import UtilsDemo from "./compontents/UtilsDemo";
 import BridgeUpdater from "./compontents/BridgeUpdater";
-import { useNavigate } from "react-router-dom";
 
 const items: TabsProps["items"] = [
   {
@@ -33,13 +32,8 @@ const items: TabsProps["items"] = [
 ];
 
 const App: React.FC = () => {
-  const navigate = useNavigate();
   return (
     <div>
-      <div>
-        <button onClick={() => navigate("/assets")}>Assets</button>
-        <button onClick={() => require("vconsole")}>Assets</button>
-      </div>
       {/* <button onClick={OnInpageClick}>inpage</button>
       <button onClick={OnConentClick}>conent</button> */}
 
