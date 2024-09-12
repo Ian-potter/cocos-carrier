@@ -118,8 +118,7 @@ export default function WebLoginConfigProvider({
     scpt.src = "./telegram-web-app.js";
     document.body.appendChild(scpt);
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    scpt?.addEventListener("load", (e: any) => {
+    scpt?.addEventListener("load", () => {
       setIsLoaded(true);
       return;
     });
