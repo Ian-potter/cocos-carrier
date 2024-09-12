@@ -1,7 +1,7 @@
 import { IConfigProps } from "@aelf-web-login/wallet-adapter-bridge";
 // import { NightElfWallet } from "@aelf-web-login/wallet-adapter-night-elf";
 import { init, WebLoginProvider } from "@aelf-web-login/wallet-adapter-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { APP_NAME } from "../constants/website";
 import loginConfig from "../constants/config/login.config";
 import { SignInDesignEnum } from "@aelf-web-login/wallet-adapter-base";
@@ -100,12 +100,31 @@ const config: IConfigProps = {
   wallets,
 };
 
+function WebLoginProviderELE({ children }: { children: React.ReactNode }) {
+  const bridgeAPI = init(config);
+
+  return <WebLoginProvider bridgeAPI={bridgeAPI}>{children}</WebLoginProvider>;
+}
+
 export default function WebLoginConfigProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const bridgeAPI = init(config);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
-  return <WebLoginProvider bridgeAPI={bridgeAPI}>{children}</WebLoginProvider>;
+  useEffect(() => {
+    const scpt = document.createElement("script");
+    scpt.src = "./telegram-web-app.js";
+    document.body.appendChild(scpt);
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    scpt?.addEventListener("load", (e: any) => {
+      setIsLoaded(true);
+      return;
+    });
+  }, []);
+  return isLoaded ? (
+    <WebLoginProviderELE>{children}</WebLoginProviderELE>
+  ) : null;
 }
