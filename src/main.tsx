@@ -14,7 +14,7 @@ if (
   process.env.NODE_ENV === "production" &&
   LOGIN_CONFIG.NETWORK_TYPE === "MAINNET"
 ) {
-  // Replace with your own tracking ID
+  // Replace with your own Measurement Id
   ReactGA.initialize("G-1TNN5WRTQ3");
 }
 
