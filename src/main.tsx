@@ -8,6 +8,7 @@ import WebLoginConfigProvider from "./provider/weblogin.tsx";
 import ETransferLayout from "./provider/ETransferLayout.tsx";
 import ReactGA from "react-ga4";
 import LOGIN_CONFIG from "./constants/config/login.config";
+import InAppPurchase from "./page-components/InAppPurchase/index.tsx";
 
 // when MAINNET and production
 if (
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: "/assets",
     element: <AssetsPage />,
+  },
+  {
+    path: "/in-app-purchase",
+    element: <InAppPurchase />,
   },
   {
     path: "*",

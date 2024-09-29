@@ -17,9 +17,9 @@
     "@aelf-web-login/wallet-adapter-portkey-aa": "^0.1.6",
     "@aelf-web-login/wallet-adapter-portkey-discover": "^0.1.6",
     "@aelf-web-login/wallet-adapter-react": "^0.1.6",
-    "@portkey/did-ui-react": "2.10.1",
     "@etransfer/core": "1.6.4",
     "@etransfer/ui-react": "1.6.4",
+    "@portkey/did-ui-react": "2.10.1",
     "aelf-sdk": "^3.4.14-beta.1",
     "antd": "^5.19.1",
     "events": "^3.3.0",
@@ -27,6 +27,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-ga4": "^2.1.0",
+    "react-json-view": "^1.21.3",
     "react-router-dom": "^6.26.1",
     "vite-plugin-node-polyfills": "^0.22.0"
   },
