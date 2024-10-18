@@ -77,6 +77,12 @@ const LoginDemo: React.FC = () => {
             deposit
           </Button>
         )}
+
+        {isConnected && (
+          <Button type="primary" onClick={() => navigate("/in-app-purchase")}>
+            in-app-purchase
+          </Button>
+        )}
       </Flex>
       <ETransfer ref={transferRef} />
 

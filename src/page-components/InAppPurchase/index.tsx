@@ -2,17 +2,28 @@ import { Button, Col, Divider, Input, Row, Select, Space } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import ReactJson from "react-json-view";
 import qs from "querystring";
-import { randomId } from "@portkey/did-ui-react";
+import { randomId, singleMessage } from "@portkey/did-ui-react";
+import { useConnectWallet } from "@aelf-web-login/wallet-adapter-react";
+import { useNavigate } from "react-router-dom";
+import { TChainId } from "@aelf-web-login/wallet-adapter-base";
 const CONFIG = {
   TESTNET: {
     networkType: "TESTNET",
     // TODO
     serviceUrl: "/in-app-purchase-testnet", //  "https://game-station-test.portkey.finance",
+    tokenContractAddress: "ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx",
+    portkeyContractAddress:
+      "238X6iw1j8YKcHvkDYVtYVbuYk2gJnK8UoNpVCtssynSpVC8hb",
+    chainId: "tDVW",
   },
   MAINNET: {
     networkType: "MAINNET",
     // TODO
     serviceUrl: "/in-app-purchase-mainnet", // "https://game-station.portkey.finance",
+    tokenContractAddress: "7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX",
+    portkeyContractAddress:
+      "2UthYi7AHRdfrqc1YCfeQnjdChDLaas65bW4WxESMGMojFiXj9",
+    chainId: "tDVV",
   },
 };
 
@@ -27,15 +38,15 @@ const OPTIONS = Object.values(CONFIG).map((item) => ({
 }));
 
 const DEFAULT_MONITOR_INFO = {
-  toAddress: "zALNGViyR7NbJyyKMfcoY7R58RnRNyM7cUgQeWVUR4SLCHfmE",
+  toAddress: "2c5KtzrfU7WNTCA25A7bueEQfr1oxinUutYZ4GseihgkjRjAR7",
   callbackUrl:
-    "https://6486-2408-821b-8819-4490-7914-3a4b-5ff8-751b.ngrok-free.app/purchase/callback",
+    "https://d6bd-2408-821b-8819-4490-904c-6208-64b3-178c.ngrok-free.app/purchase/callback",
 };
 
 const DEFAULT_UPDATE_MONITOR_INFO = {
-  reviseToAddress: "zALNGViyR7NbJyyKMfcoY7R58RnRNyM7cUgQeWVUR4SLCHfmE",
+  reviseToAddress: "2c5KtzrfU7WNTCA25A7bueEQfr1oxinUutYZ4GseihgkjRjAR7",
   reviseCallbackUrl:
-    "https://6486-2408-821b-8819-4490-7914-3a4b-5ff8-751b.ngrok-free.app/purchase/callback",
+    "https://d6bd-2408-821b-8819-4490-904c-6208-64b3-178c.ngrok-free.app/purchase/callback",
 };
 
 const getAppId = () => {
@@ -53,6 +64,14 @@ export default function InAppPurchase() {
   const [guardKey, setGuardKey] = useState("");
   const [monitorInfo, setMonitorInfo] = useState(DEFAULT_MONITOR_INFO);
   const [configList, setConfigList] = useState();
+  const { isConnected, callSendMethod } = useConnectWallet();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isConnected) {
+      navigate("/");
+    }
+  }, [isConnected, navigate]);
 
   const [updateMdonitorInfo, setUpdateMonitorInfo] = useState({
     ...DEFAULT_MONITOR_INFO,
@@ -81,6 +100,10 @@ export default function InAppPurchase() {
     }).then((res) => res.json());
 
     console.log(result, "result==");
+    if (!result.success) {
+      singleMessage.error(result.message);
+      return;
+    }
     const guardKey = result.data;
     localStorage.setItem("guardInfo", `${appId}-${guardKey}`);
     setGuardKey(guardKey);
@@ -107,7 +130,10 @@ export default function InAppPurchase() {
         key: guardKey,
       })}`
     ).then((res) => res.json());
-
+    if (!signatureResult.success) {
+      singleMessage.error(signatureResult.message);
+      return;
+    }
     console.log(signatureResult, "getSignature===");
     const signature = signatureResult.data.signature;
 
@@ -119,7 +145,10 @@ export default function InAppPurchase() {
         signature,
       }),
     }).then((res) => res.json());
-
+    if (!result.success) {
+      singleMessage.error(result.message);
+      return;
+    }
     console.log(result, "onAddMonitorInfo=result==");
   }, [config.serviceUrl, guardKey, monitorInfo]);
 
@@ -132,6 +161,10 @@ export default function InAppPurchase() {
     ).then((res) => res.json());
     const signature = signatureResult.data.signature;
 
+    if (!signatureResult.success) {
+      singleMessage.error(signatureResult.message);
+      return;
+    }
     const result = await fetch(`${config.serviceUrl}/api/config/update`, {
       method: "POST",
       headers: DEFAULT_HEADERS,
@@ -140,7 +173,10 @@ export default function InAppPurchase() {
         signature,
       }),
     }).then((res) => res.json());
-
+    if (!result.success) {
+      singleMessage.error(result.message);
+      return;
+    }
     console.log(result, "onUpdateMonitorInfo=result==");
   }, [config.serviceUrl, guardKey, updateMdonitorInfo]);
 
@@ -152,7 +188,10 @@ export default function InAppPurchase() {
       })}`
     ).then((res) => res.json());
     const signature = signatureResult.data.signature;
-
+    if (!signature.success) {
+      singleMessage.error(signature.message);
+      return;
+    }
     const result = await fetch(`${config.serviceUrl}/api/config/getList`, {
       method: "POST",
       headers: DEFAULT_HEADERS,
@@ -161,10 +200,48 @@ export default function InAppPurchase() {
         signature,
       }),
     }).then((res) => res.json());
-
+    if (!result.success) {
+      singleMessage.error(result.message);
+      return;
+    }
     console.log(result, "onGetList=result==");
     setConfigList(result.data);
   }, [appId, config.serviceUrl, guardKey]);
+
+  const onTransfer = useCallback(async () => {
+    const result = await callSendMethod({
+      contractAddress: config.tokenContractAddress,
+      methodName: "Transfer",
+      args: {
+        to: monitorInfo.toAddress,
+        amount: 0.0001 * 1e8, // amount * decimals
+        symbol: "ELF",
+        memo: "userId Equipment ID Transfer",
+      },
+      chainId: config.chainId as TChainId,
+    });
+    console.log(result, "result===onTransfer");
+  }, [
+    callSendMethod,
+    config.chainId,
+    config.tokenContractAddress,
+    monitorInfo.toAddress,
+  ]);
+
+  // const onManagerTransfer = useCallback(async () => {
+  //   const result = await callSendMethod({
+  //     contractAddress: config.portkeyContractAddress,
+  //     methodName: "ManagerTransfer",
+  //     args: {
+  //       to: monitorInfo.toAddress,
+  //       amount: 0.0001 * 1e8, // amount * decimals
+  //       symbol: "ELF",
+  //       memo: "userId Equipment ID ManagerTransfer",
+  //     },
+  //     chainId: config.chainId as TChainId,
+  //   });
+  //   console.log(result, "result===onTransfer");
+  // }, [callSendMethod, config.chainId, config.portkeyContractAddress, monitorInfo.toAddress]);
 
   return (
     <div>
@@ -262,6 +339,20 @@ export default function InAppPurchase() {
             GetList
           </Button>
           {configList && <ReactJson src={configList} />}
+        </Space>
+      </Row>
+
+      <Divider />
+
+      <Row>
+        <Space>
+          <Button type="primary" onClick={onTransfer}>
+            Transfer token to service address
+          </Button>
+
+          {/* <Button type="primary" onClick={onManagerTransfer}>
+            ManagerTransfer token to service address (transfer by Portkey contractMethod)
+          </Button> */}
         </Space>
       </Row>
     </div>
