@@ -1,5 +1,5 @@
 import { NetworkEnum, TChainId } from "@aelf-web-login/wallet-adapter-base";
-import { ChainId } from '@portkey/types';
+import { ChainId } from "@portkey/types";
 
 export const CHAIN_ID = "tDVV" satisfies TChainId;
 
@@ -8,8 +8,7 @@ export const RPC_SERVER_AELF = "https://aelf-public-node.aelf.io";
 export const RPC_SERVER_TDVV = "https://tdvv-public-node.aelf.io";
 export const RPC_SERVER_TDVW = "";
 export const GRAPHQL_SERVER =
-  "https://dapp-aa-portkey.portkey.finance/Portkey_V2_DID/PortKeyIndexerCASchema/graphql";
-
+  "https://dapp-aa-portkey.portkey.finance/aefinder-v2/api/app/graphql/portkey";
 export const CONNECT_SERVER = "https://auth-aa-portkey.portkey.finance";
 
 export const PORTKEY_SERVER_URL = "https://aa-portkey.portkey.finance";
@@ -26,10 +25,9 @@ export const ETRANSFER_CONFIG = {
   etransferUrl: "https://app.etransfer.exchange",
 };
 
-
 export enum SupportedELFChainId {
-  AELF = 'AELF',
-  tDVV = 'tDVV',
+  AELF = "AELF",
+  tDVV = "tDVV",
 }
 
 export const SupportedChainId = {
