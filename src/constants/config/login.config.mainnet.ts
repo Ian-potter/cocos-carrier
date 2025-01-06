@@ -8,7 +8,7 @@ export const RPC_SERVER_AELF = "https://aelf-public-node.aelf.io";
 export const RPC_SERVER_TDVV = "https://tdvv-public-node.aelf.io";
 export const RPC_SERVER_TDVW = "";
 export const GRAPHQL_SERVER =
-  "https://dapp-aa-portkey.portkey.finance/aefinder-v2/api/app/graphql/portkey";
+  "https://indexer-api.aefinder.io/api/app/graphql/portkey";
 export const CONNECT_SERVER = "https://auth-aa-portkey.portkey.finance";
 
 export const PORTKEY_SERVER_URL = "https://aa-portkey.portkey.finance";
